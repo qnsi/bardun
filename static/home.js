@@ -1,4 +1,4 @@
-window.addEventListener("load", function () {
+function mainFunc(currentDoc) {
   CodeMirror.defineMode("noteLink", function (config, parserConfig) {
     var noteLinkOverlay = {
       token: function (stream, state) {
@@ -37,7 +37,7 @@ window.addEventListener("load", function () {
     vieportMargin: 100000000,
     mode: "noteLink",
   });
-  cm.getDoc().setValue("Hello world!");
+  cm.getDoc().setValue(currentDoc);
 
   cm.getWrapperElement().addEventListener("click", (event) => {
     var clickedDiv = event.target;
@@ -48,4 +48,4 @@ window.addEventListener("load", function () {
       console.log(linkName);
     }
   });
-});
+}

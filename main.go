@@ -7,7 +7,8 @@ import (
 )
 
 type HomeData struct {
-	Message string
+	Message    string
+	CurrentDoc string
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +17,10 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	err = tpl.Execute(w, HomeData{Message: "Hello world!@"})
+	err = tpl.Execute(w, HomeData{
+		Message:    "Hello world!@",
+		CurrentDoc: "Welcome to golang generated variables in javascript",
+	})
 	if err != nil {
 		panic(err)
 	}
