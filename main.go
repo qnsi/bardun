@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -23,21 +22,15 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func staticHandler(w http.ResponseWriter, r *http.Request) {
-	data, err := ioutil.ReadFile("./static/home.js")
-	if err != nil {
-		panic(err)
-	}
-	w.Header().Set("Content-Type", "text/javascript")
-	w.Write(data)
-}
-
 func main() {
 	// db := utils.PrepareDB()
 	// contacts := models.GetContacts(db)
 	// fmt.Println(contacts[0].FirstName)
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/static/home.js", staticHandler)
+
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+
 	fmt.Println("Starting server at :3000...")
 	http.ListenAndServe(":3000", nil)
 }
