@@ -20,14 +20,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	keys, ok := r.URL.Query()["note"]
-	var key string
-	if !ok || len(keys[0]) < 1 {
-		log.Println("Url param is missing")
-		key = "Home"
-	} else {
-		key = keys[0]
-	}
+	key := readKeyFromUrlQuery(r)
 
 	noteMap := map[string]string{
 		"Home":  "Welcome to golang generated variables in javascript\n[[Books]]",
@@ -44,6 +37,18 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func readKeyFromUrlQuery(r *http.Request) string {
+	keys, ok := r.URL.Query()["note"]
+	var key string
+	if !ok || len(keys[0]) < 1 {
+		log.Println("Url param is missing")
+		key = "Home"
+	} else {
+		key = keys[0]
+	}
+	return key
 }
 
 func main() {
