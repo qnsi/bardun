@@ -12,8 +12,7 @@ function handleNoteLinkClick(event) {
   if (clickedDiv.classList[0] === "cm-noteLink") {
     var linkNameDirty = clickedDiv.textContent;
     var linkName = linkNameDirty.substr(2).slice(0, -2);
-    console.log("Loading file:...)");
-    console.log(linkName);
+    window.location.href = "?note=" + linkName;
   }
 }
 
