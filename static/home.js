@@ -1,4 +1,35 @@
 function mainFunc(currentDoc) {
+  defineNoteLinkMode();
+
+  cm = createCodeMirrorEditor();
+  cm.getDoc().setValue(currentDoc);
+
+  cm.getWrapperElement().addEventListener("click", handleNoteLinkClick);
+}
+
+function handleNoteLinkClick(event) {
+  var clickedDiv = event.target;
+  if (clickedDiv.classList[0] === "cm-noteLink") {
+    var linkNameDirty = clickedDiv.textContent;
+    var linkName = linkNameDirty.substr(2).slice(0, -2);
+    console.log("Loading file:...)");
+    console.log(linkName);
+  }
+}
+
+function createCodeMirrorEditor() {
+  var cm = CodeMirror.fromTextArea(document.getElementById("editor"), {
+    lineNumbers: true,
+    lineWrapping: true,
+    theme: "default",
+    keyMap: "vim",
+    vieportMargin: 100000000,
+    mode: "noteLink",
+  });
+  return cm;
+}
+
+function defineNoteLinkMode() {
   CodeMirror.defineMode("noteLink", function (config, parserConfig) {
     var noteLinkOverlay = {
       token: function (stream, state) {
@@ -27,25 +58,5 @@ function mainFunc(currentDoc) {
       CodeMirror.getMode(config, parserConfig.backdrop || "markdown"),
       noteLinkOverlay
     );
-  });
-
-  var cm = CodeMirror.fromTextArea(document.getElementById("editor"), {
-    lineNumbers: true,
-    lineWrapping: true,
-    theme: "default",
-    keyMap: "vim",
-    vieportMargin: 100000000,
-    mode: "noteLink",
-  });
-  cm.getDoc().setValue(currentDoc);
-
-  cm.getWrapperElement().addEventListener("click", (event) => {
-    var clickedDiv = event.target;
-    if (clickedDiv.classList[0] === "cm-noteLink") {
-      var linkNameDirty = clickedDiv.textContent;
-      var linkName = linkNameDirty.substr(2).slice(0, -2);
-      console.log("Loading file:...)");
-      console.log(linkName);
-    }
   });
 }
